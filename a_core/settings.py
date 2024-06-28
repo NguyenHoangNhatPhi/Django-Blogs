@@ -151,3 +151,7 @@ INTERNAL_IPS = [
 ]
 
 LOGIN_REDIRECT_URL = "/"
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+ACCOUNT_AUTHENTICATED_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
