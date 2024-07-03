@@ -157,3 +157,5 @@ LOGIN_REDIRECT_URL = "/"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 ACCOUNT_AUTHENTICATED_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
+
+ACCOUNT_USERNAME_BLACKLIST = ["admin", "accounts", "profile", "category", "post"]

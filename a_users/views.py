@@ -1,14 +1,20 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.http import Http404
 
 from a_users.models import Profile
 from a_users.forms import ProfileForm
 
 
-@login_required
-def profile_view(request):
-    profile = request.user.profile
-
+def profile_view(request, username=None):
+    if username:
+        profile = get_object_or_404(User, username=username).profile
+    else:
+        try:
+            profile = request.user.profile
+        except:
+            return redirect("http://127.0.0.1:8000/accounts/login/")
     return render(request, "a_users/profile.html", {"profile": profile})
 
 

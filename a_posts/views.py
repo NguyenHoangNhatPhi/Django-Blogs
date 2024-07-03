@@ -15,7 +15,7 @@ def home_view(request, tag=None):
         posts = Post.objects.prefetch_related("tags").all()
 
     categories = Tag.objects.all()
- 
+
     context = {"posts": posts, "categories": categories, "tag": tag}
 
     return render(request, "a_posts/home.html", context)
