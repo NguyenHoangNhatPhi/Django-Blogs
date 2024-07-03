@@ -1,5 +1,6 @@
 from django.db import models
 import uuid
+from django.contrib.auth.models import User
 
 
 class Post(models.Model):
@@ -15,6 +16,9 @@ class Post(models.Model):
         unique=True,
         primary_key=True,
         editable=False,
+    )
+    author = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, related_name="posts"
     )
 
     tags = models.ManyToManyField("Tag")
