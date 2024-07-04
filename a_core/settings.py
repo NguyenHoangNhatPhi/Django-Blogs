@@ -159,3 +159,5 @@ ACCOUNT_AUTHENTICATED_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 
 ACCOUNT_USERNAME_BLACKLIST = ["admin", "accounts", "profile", "category", "post"]
+
+ACCOUNT_ADAPTER = "a_users.adapter.MyAccountAdapter"
