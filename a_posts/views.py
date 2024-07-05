@@ -4,8 +4,8 @@ import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from a_posts.models import Post, Tag
-from a_posts.forms import PostCreateForm, PostEditForm
+from a_posts.models import Post, Tag, Comment
+from a_posts.forms import PostCreateForm, PostEditForm, CommentCreateForm
 
 
 def home_view(request, tag=None):
@@ -89,4 +89,22 @@ def post_edit_view(request, pk):
 
 def post_page_view(request, pk):
     post = get_object_or_404(Post, id=pk)
-    return render(request, "a_posts/post_detail.html", {"post": post})
+    # comments = Comment.objects.prefetch_related("author").filter(parent_post=post)
+    commentform = CommentCreateForm()
+    context = {"post": post, "commentform": commentform}
+
+    return render(request, "a_posts/post_detail.html", context)
+
+
+def comment_sent(request, pk):
+    post = get_object_or_404(Post, id=pk)
+
+    if request.method == "POST":
+        form = CommentCreateForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.parent_post = post
+            comment.save()
+
+    return redirect("post-detail", post.id)
