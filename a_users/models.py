@@ -18,7 +18,6 @@ class Profile(models.Model):
     @property
     def avatar(self):
         try:
-            print(self.image.url)
             default_avatar = self.image.url
             
         except:
