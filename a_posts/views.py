@@ -89,9 +89,9 @@ def post_edit_view(request, pk):
 
 def post_page_view(request, pk):
     post = get_object_or_404(Post, id=pk)
-    # comments = Comment.objects.prefetch_related("author").filter(parent_post=post)
+    comments = Comment.objects.prefetch_related("author").filter(parent_post=post)
     commentform = CommentCreateForm()
-    context = {"post": post, "commentform": commentform}
+    context = {"post": post, "commentform": commentform, "comments": comments}
 
     return render(request, "a_posts/post_detail.html", context)
 
