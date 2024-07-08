@@ -116,6 +116,6 @@ def comment_delete_view(request, pk):
     if request.method == "POST":
         comment.delete()
         messages.success(request, "Comment deleted")
-        return redirect("post", comment.parent_post.id)
+        return redirect("post-detail", comment.parent_post.id)
     
     return render(request, "a_posts/comment_delete.html", {"comment": comment})
