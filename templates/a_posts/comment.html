@@ -35,7 +35,7 @@
                 1
             </div>
             <a href="">Like</a>
-            <a href="">Delete</a>
+            <a href="{% url 'comment-delete' comment.id %}">Delete</a>
         </div>
 
         <div x-show="repliesOpen" x-cloak class="basis-full mt-3 pl-8 grid grid-cols-1">
