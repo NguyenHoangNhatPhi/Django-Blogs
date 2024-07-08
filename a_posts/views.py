@@ -5,7 +5,12 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from a_posts.models import Post, Tag, Comment
-from a_posts.forms import PostCreateForm, PostEditForm, CommentCreateForm
+from a_posts.forms import (
+    PostCreateForm,
+    PostEditForm,
+    CommentCreateForm,
+    ReplyCreateForm,
+)
 
 
 def home_view(request, tag=None):
@@ -91,7 +96,13 @@ def post_page_view(request, pk):
     post = get_object_or_404(Post, id=pk)
     comments = Comment.objects.prefetch_related("author").filter(parent_post=post)
     commentform = CommentCreateForm()
-    context = {"post": post, "commentform": commentform, "comments": comments}
+    replyform = ReplyCreateForm()
+    context = {
+        "post": post,
+        "commentform": commentform,
+        "comments": comments,
+        "replyform": replyform,
+    }
 
     return render(request, "a_posts/post_detail.html", context)
 
@@ -109,13 +120,29 @@ def comment_sent(request, pk):
 
     return redirect("post-detail", post.id)
 
+
 @login_required
 def comment_delete_view(request, pk):
-    comment = get_object_or_404(Comment, id = pk, author = request.user )
-    
+    comment = get_object_or_404(Comment, id=pk, author=request.user)
+
     if request.method == "POST":
         comment.delete()
         messages.success(request, "Comment deleted")
         return redirect("post-detail", comment.parent_post.id)
-    
+
     return render(request, "a_posts/comment_delete.html", {"comment": comment})
+
+
+@login_required
+def reply_send(request, pk):
+    comment = get_object_or_404(Comment, id=pk)
+
+    if request.method == "POST":
+        form = ReplyCreateForm(request.POST)
+        if form.is_valid():
+            reply = form.save(commit=False)
+            reply.parent_comment = comment
+            reply.author = request.user
+            reply.save()
+            
+    return redirect("post-detail", comment.parent_post.id)

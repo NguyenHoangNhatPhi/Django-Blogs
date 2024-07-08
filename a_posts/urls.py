@@ -11,5 +11,6 @@ urlpatterns = [
     path("post-edit/<pk>", views.post_edit_view, name="post-edit"),
     path("post-detail/<pk>", views.post_page_view, name="post-detail"),
     path("comment-sent/<pk>", views.comment_sent, name="comment-sent"),
-    path("comment-delete/<pk>", views.comment_delete_view, name="comment-delete")
+    path("comment-delete/<pk>", views.comment_delete_view, name="comment-delete"),
+    path("reply-sent/<pk>", views.reply_send, name="reply-sent")
 ]
