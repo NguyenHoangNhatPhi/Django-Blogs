@@ -15,10 +15,10 @@ from a_posts.forms import (
 
 def home_view(request, tag=None):
     if tag:
-        posts = Post.objects.prefetch_related("tags").filter(tags__slug=tag)
+        posts = Post.objects.prefetch_related("tags", "likes").filter(tags__slug=tag)
         tag = get_object_or_404(Tag, slug=tag)
     else:
-        posts = Post.objects.prefetch_related("tags").all()
+        posts = Post.objects.prefetch_related("tags", "likes").all()
 
     categories = Tag.objects.all()
 
@@ -144,18 +144,17 @@ def reply_send(request, pk):
             reply.parent_comment = comment
             reply.author = request.user
             reply.save()
-            
+
     return redirect("post-detail", comment.parent_post.id)
 
 
 @login_required
 def reply_delete_view(request, pk):
-    reply = get_object_or_404(Reply, id = pk, author= request.user)
-    
+    reply = get_object_or_404(Reply, id=pk, author=request.user)
+
     if request.method == "POST":
         reply.delete()
         messages.success(request, "Reply deleted")
         return redirect("post-detail", reply.parent_comment.parent_post.id)
-    
+
     return render(request, "a_posts/reply_delete.html", {"reply": reply})
-     
