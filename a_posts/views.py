@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 from a_posts.models import Post, Tag, Comment, Reply
 from a_posts.forms import (
@@ -171,4 +172,4 @@ def like_post(request, pk):
         else:
             post.likes.add(request.user)
 
-    return redirect("post-detail", post.id)
+    return render(request, "snippets/likes.html", {"post": post})
