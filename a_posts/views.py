@@ -173,3 +173,8 @@ def like_post(request, pk):
             post.likes.add(request.user)
 
     return render(request, "snippets/likes.html", {"post": post})
+
+
+@login_required
+def like_comment(request, pk):
+    pass

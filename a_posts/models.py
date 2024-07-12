@@ -69,6 +69,7 @@ class Comment(models.Model):
         primary_key=True,
         editable=False,
     )
+    likes = models.ManyToManyField(User, related_name="likedcomments", through="LikedCommnet")
 
     def __str__(self) -> str:
         try:
@@ -79,6 +80,13 @@ class Comment(models.Model):
     class Meta:
         ordering = ["-created"]
 
+class LikedCommnet(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self) -> str:
+        return f"{self.user.username} : {self.comment.body[:30]}"
 
 class Reply(models.Model):
     author = models.ForeignKey(
