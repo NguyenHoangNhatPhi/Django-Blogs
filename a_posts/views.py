@@ -181,11 +181,17 @@ def like_toggle(model):
 
 @login_required
 @like_toggle(model=Post)
-def like_post(request, instance):
-    return render(request, "snippets/likes.html", {"post": instance})
+def like_post(request, post):
+    return render(request, "snippets/likes.html", {"post": post})
 
 
 @login_required
 @like_toggle(Comment)
-def like_comment(request, instance):
-    return render(request, "snippets/likes_comment.html", {"comment": instance})
+def like_comment(request, comment):
+    return render(request, "snippets/likes_comment.html", {"comment": comment})
+
+
+@login_required
+@like_toggle(Reply)
+def like_reply(request, reply):
+    return render(request, "snippets/likes_reply.html", {"reply": reply})

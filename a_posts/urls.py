@@ -15,5 +15,6 @@ urlpatterns = [
     path("reply-sent/<pk>/", views.reply_send, name="reply-sent"),
     path("reply-delete/<pk>/", views.reply_delete_view, name="reply-delete"),
     path("post-like/<pk>/", views.like_post, name="like-post"),
-    path("comment-like/<pk>/", views.like_comment, name="like-comment")
+    path("comment-like/<pk>/", views.like_comment, name="like-comment"),
+    path("reply-like/<pk>/", views.like_reply, name="like-reply"),
 ]

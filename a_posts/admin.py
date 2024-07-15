@@ -2,4 +2,4 @@ from django.contrib import admin
 
 from a_posts.models import *
 
-admin.site.register([Post, Tag, Comment, Reply, LikePost, LikedComment])
+admin.site.register([Post, Tag, Comment, Reply, LikePost, LikedComment, LikedRepy])

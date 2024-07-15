@@ -69,7 +69,9 @@ class Comment(models.Model):
         primary_key=True,
         editable=False,
     )
-    likes = models.ManyToManyField(User, related_name="likedcomments", through="LikedComment")
+    likes = models.ManyToManyField(
+        User, related_name="likedcomments", through="LikedComment"
+    )
 
     def __str__(self) -> str:
         try:
@@ -80,13 +82,15 @@ class Comment(models.Model):
     class Meta:
         ordering = ["-created"]
 
+
 class LikedComment(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
-    
+
     def __str__(self) -> str:
         return f"{self.user.username} : {self.comment.body[:30]}"
+
 
 class Reply(models.Model):
     author = models.ForeignKey(
@@ -104,6 +108,9 @@ class Reply(models.Model):
         primary_key=True,
         editable=False,
     )
+    likes = models.ManyToManyField(
+        User, related_name="likedreplies", through="LikedRepy"
+    )
 
     def __str__(self) -> str:
         try:
@@ -113,3 +120,12 @@ class Reply(models.Model):
 
     class Meta:
         ordering = ["created"]
+
+
+class LikedRepy(models.Model):
+    reply = models.ForeignKey(Reply, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"{self.user.username} : {self.reply.body[:30]}"
