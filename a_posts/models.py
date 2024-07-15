@@ -69,7 +69,7 @@ class Comment(models.Model):
         primary_key=True,
         editable=False,
     )
-    likes = models.ManyToManyField(User, related_name="likedcomments", through="LikedCommnet")
+    likes = models.ManyToManyField(User, related_name="likedcomments", through="LikedComment")
 
     def __str__(self) -> str:
         try:
@@ -80,7 +80,7 @@ class Comment(models.Model):
     class Meta:
         ordering = ["-created"]
 
-class LikedCommnet(models.Model):
+class LikedComment(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)

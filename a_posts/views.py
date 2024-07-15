@@ -161,20 +161,31 @@ def reply_delete_view(request, pk):
     return render(request, "a_posts/reply_delete.html", {"reply": reply})
 
 
+def like_toggle(model):
+    def inner_func(func):
+        def wrapper(request, *args, **kwargs):
+            instance = get_object_or_404(model, id=kwargs.get("pk"))
+            user_exits = instance.likes.filter(id=request.user.id)
+
+            if instance.author != request.user:
+                if user_exits:
+                    instance.likes.remove(request.user)
+                else:
+                    instance.likes.add(request.user)
+            return func(request, instance)
+
+        return wrapper
+
+    return inner_func
+
+
 @login_required
-def like_post(request, pk):
-    post = get_object_or_404(Post, id=pk)
-    user_exist = post.likes.filter(username=request.user.username).exists()
-
-    if  post.author != request.user:
-        if user_exist:
-            post.likes.remove(request.user)
-        else:
-            post.likes.add(request.user)
-
-    return render(request, "snippets/likes.html", {"post": post})
+@like_toggle(model=Post)
+def like_post(request, instance):
+    return render(request, "snippets/likes.html", {"post": instance})
 
 
 @login_required
-def like_comment(request, pk):
-    pass
+@like_toggle(Comment)
+def like_comment(request, instance):
+    return render(request, "snippets/likes_comment.html", {"comment": instance})
