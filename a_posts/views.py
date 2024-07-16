@@ -110,6 +110,7 @@ def post_page_view(request, pk):
 
 def comment_sent(request, pk):
     post = get_object_or_404(Post, id=pk)
+    replyform = ReplyCreateForm()
 
     if request.method == "POST":
         form = CommentCreateForm(request.POST)
@@ -118,7 +119,7 @@ def comment_sent(request, pk):
             comment.author = request.user
             comment.parent_post = post
             comment.save()
-    context = {"comment": comment, "post": post}
+    context = {"comment": comment, "post": post, "replyform": replyform}
 
     return render(request, "snippets/add_comment.html", context)
 
@@ -138,6 +139,7 @@ def comment_delete_view(request, pk):
 @login_required
 def reply_send(request, pk):
     comment = get_object_or_404(Comment, id=pk)
+    replyform = ReplyCreateForm()
 
     if request.method == "POST":
         form = ReplyCreateForm(request.POST)
@@ -147,7 +149,9 @@ def reply_send(request, pk):
             reply.author = request.user
             reply.save()
 
-    return redirect("post-detail", comment.parent_post.id)
+    context = {"comment": comment, "reply": reply, "replyform": replyform}
+
+    return render(request, "snippets/add_reply.html", context)
 
 
 @login_required

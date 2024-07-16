@@ -4,19 +4,21 @@
 
 {% include "a_posts/post.html" %}
 
-<div class="card !pb-0 -mt-3">
-    <form 
-        class="flex items-center p-4"
-        hx-post="{% url 'comment-sent' post.id %}"
-        hx-target="#tab-contents"
-        hx-swap="afterbegin"
-        _="on htmx:afterRequest reset() me"
-    >
-        {% csrf_token %}
-        {{commentform.body}}
-        <button @click="open= false" type="submit" class="block ml-2">Submit</button>
-    </form>
-</div>
+{% if user.is_authenticated %}
+    <div class="card !pb-0 -mt-3">
+        <form 
+            class="flex items-center p-4"
+            hx-post="{% url 'comment-sent' post.id %}"
+            hx-target="#tab-contents"
+            hx-swap="afterbegin"
+            _="on htmx:afterRequest reset() me"
+        >
+            {% csrf_token %}
+            {{commentform.body}}
+            <button @click="open= false" type="submit" class="block ml-2">Submit</button>
+        </form>
+    </div>
+{% endif %}
 
 {% if post.comments.count %}
     <div class="mb-20">
