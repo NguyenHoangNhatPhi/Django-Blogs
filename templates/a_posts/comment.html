@@ -19,15 +19,15 @@
     <p class="text-xl px-2">
         {{comment.body}}
     </p>
-    <div x-data="{ repliesOpen: true }" class="flex items-center justify-between flex-wrap text-sm px-2">
+    <div x-data="{ repliesOpen: {{comment.replies.count}} }" class="flex items-center justify-between flex-wrap text-sm px-2">
         <a @click="repliesOpen = !repliesOpen" class="font-bold hover:underline cursor-pointer">
             <div class="inline-block" x-bind:class="repliesOpen && 'rotate-90 duration-300'">
                 <svg transform="rotate(90)" width="9" height="9" viewBox="0 0 25 25">
                     <path d="M24 22h-24l12-20z" />
                 </svg>
             </div>
-            Replies
             {% if comment.replies.count %}
+                Replies
                 <span class="font-light text-gray-500 ml-1">{{comment.replies.count}}</span>
             {% else %}
                 {% if user.is_authenticated %}

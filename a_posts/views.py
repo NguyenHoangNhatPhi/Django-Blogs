@@ -118,8 +118,9 @@ def comment_sent(request, pk):
             comment.author = request.user
             comment.parent_post = post
             comment.save()
+    context = {"comment": comment, "post": post}
 
-    return redirect("post-detail", post.id)
+    return render(request, "snippets/add_comment.html", context)
 
 
 @login_required
