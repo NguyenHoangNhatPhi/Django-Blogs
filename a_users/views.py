@@ -5,9 +5,11 @@ from django.http import Http404
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.urls import reverse
+from django.db.models import Count
 
 from a_users.models import Profile
 from a_users.forms import ProfileForm
+from a_posts.forms import ReplyCreateForm
 
 
 def profile_view(request, username=None):
@@ -18,7 +20,38 @@ def profile_view(request, username=None):
             profile = request.user.profile
         except:
             return redirect("/accounts/login/")
-    return render(request, "a_users/profile.html", {"profile": profile})
+
+    posts = profile.user.posts.all()
+
+    if request.htmx:
+        if "top-posts" in request.GET:
+            posts = (
+                profile.user.posts.annotate(num_likes=Count("likes"))
+                .filter(num_likes__gt=0)
+                .order_by("-num_likes")
+            )
+
+
+        elif "top-comments" in request.GET:
+            comments = (
+                profile.user.comments.annotate(num_likes=Count("likes"))
+                .filter(num_likes__gt=0)
+                .order_by("-num_likes")
+            )
+            replyform = ReplyCreateForm()
+            return render(
+                request,
+                "snippets/loop_profile_comments.html",
+                {"comments": comments, "replyform": replyform},
+            )
+        elif "liked-posts" in request.GET:
+            posts = profile.user.likedposts.order_by("-likepost__created")
+            
+        return render(request, "snippets/loop_profile_posts.html", {"posts": posts})
+
+    context = {"profile": profile, "posts": posts}
+
+    return render(request, "a_users/profile.html", context)
 
 
 @login_required
@@ -31,12 +64,11 @@ def profile_edit_view(request):
         if form.is_valid():
             form.save()
             return redirect("profile")
-    
+
     if request.path == reverse("profile-onboarding"):
         template = "a_users/profile_onboarding.html"
     else:
         template = "a_users/profile_edit.html"
-    
 
     return render(request, template, {"form": form})
 

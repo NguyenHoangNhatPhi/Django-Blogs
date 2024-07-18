@@ -22,7 +22,7 @@ class Post(models.Model):
     )
 
     tags = models.ManyToManyField("Tag")
-    likes = models.ManyToManyField(User, related_name="likedpost", through="LikePost")
+    likes = models.ManyToManyField(User, related_name="likedposts", through="LikePost")
 
     def __str__(self) -> str:
         return str(self.title)
