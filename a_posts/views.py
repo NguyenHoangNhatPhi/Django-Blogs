@@ -3,8 +3,9 @@ from bs4 import BeautifulSoup
 import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from django.db.models import Count
+from django.core.paginator import Paginator
+from django.http import HttpResponse
 
 from a_posts.models import Post, Tag, Comment, Reply
 from a_posts.forms import (
@@ -22,8 +23,18 @@ def home_view(request, tag=None):
     else:
         posts = Post.objects.prefetch_related("tags", "likes").all()
 
+    paginator = Paginator(posts, 3)
+    page = int(request.GET.get("page", 1))
 
-    context = {"posts": posts, "tag": tag}
+    try:
+        posts = paginator.page(page)
+    except:
+        return HttpResponse("")
+
+    context = {"posts": posts, "tag": tag, "page": page}
+
+    if request.htmx:
+        return render(request, "snippets/loop_home_posts.html", context)
 
     return render(request, "a_posts/home.html", context)
 
