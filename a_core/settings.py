@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "django_cleanup.apps.CleanupConfig",
     "a_posts",
     "a_users",
+    "a_inbox",
 ]
 
 MIDDLEWARE = [
