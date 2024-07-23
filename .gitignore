@@ -167,3 +167,8 @@ cython_debug/
 node_modules/
 npm-debug.log
 yarn-error.log
+
+
+media/
+static/
+.DS_Store
