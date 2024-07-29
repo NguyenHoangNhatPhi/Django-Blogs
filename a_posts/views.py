@@ -14,6 +14,7 @@ from a_posts.forms import (
     CommentCreateForm,
     ReplyCreateForm,
 )
+from a_features.views import feature_enabled
 
 
 def home_view(request, tag=None):
@@ -31,7 +32,17 @@ def home_view(request, tag=None):
     except:
         return HttpResponse("")
 
-    context = {"posts": posts, "tag": tag, "page": page}
+    try:
+        feature_herobutton = feature_enabled(1, "phi.nguyen")
+    except:
+        feature_herobutton = False
+
+    context = {
+        "posts": posts,
+        "tag": tag,
+        "page": page,
+        "feature_herobutton": feature_herobutton,
+    }
 
     if request.htmx:
         return render(request, "snippets/loop_home_posts.html", context)
