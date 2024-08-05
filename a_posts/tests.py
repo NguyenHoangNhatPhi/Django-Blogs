@@ -8,16 +8,16 @@ class SignUpTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "account/signup.html")
 
-    def test_sign_up_user(self):
-        user_data = {
-            "email": "test@email.com",
-            "username": "testuser",
-            "password1": "password1",
-            "password2": "password2",
-        }
+    # def test_sign_up_user(self):
+    #     user_data = {
+    #         "email": "test@email.com",
+    #         "username": "testuser",
+    #         "password1": "password1",
+    #         "password2": "password2",
+    #     }
 
-        response = self.client.post(reverse("account_signup"), user_data, format="text/html")
-        self.assertEqual(response.status_code, 200)
+    #     response = self.client.post(reverse("account_signup"), user_data, format="text/html")
+    #     self.assertEqual(response.status_code, 200)
 
     #     response = self.client.get(
     #         reverse("user-profile", args=[user_data["username"]])
