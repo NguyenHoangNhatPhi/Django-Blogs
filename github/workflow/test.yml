@@ -1,7 +1,7 @@
 on:
   pull_request:
-    branches:
-    - staging
+    branches: ["staging"]
+      
 
 jobs:
   build:
@@ -12,15 +12,15 @@ jobs:
       SECRET_KEY: scecret_key
 
     steps:
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: 3.11.9
+    - uses: actions/setup-python@v5
+      with:
+        python-version: 3.11.9
       
-      - run: python -m pip install --upgrade pip
+    - run: python -m pip install --upgrade pip
 
-      - run: pip install -r requirements.txt
+    - run: pip install -r requirements.txt
 
-      - run: python manage.py test
+    - run: python manage.py test
 
