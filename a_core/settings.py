@@ -14,6 +14,9 @@ from pathlib import Path
 import os
 from environ import Env
 import dj_database_url
+import sys
+
+DEBUG_TOOLBAR_ENABLED = "test" not in sys.argv
 
 env = Env()
 
@@ -57,7 +60,7 @@ INSTALLED_APPS = [
     "cloudinary_storage",
     "cloudinary",
     "django.contrib.sites",
-    "debug_toolbar",
+    # "debug_toolbar",
     "admin_honeypot",
     "allauth",
     "allauth.account",
@@ -76,7 +79,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -124,7 +127,7 @@ DATABASES = {
     }
 }
 
-POSTGRES_LOCALLY = True
+POSTGRES_LOCALLY = False
 
 if ENVIRONMENT == "production" or POSTGRES_LOCALLY:
     DATABASES["default"] = dj_database_url.parse(env("DATABASE_URL"))
@@ -187,12 +190,6 @@ CLOUDINARY_STORAGE = {
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-INTERNAL_IPS = [
-    # ...
-    "127.0.0.1",
-    "localhost:800",
-    # ...
-]
 
 LOGIN_REDIRECT_URL = "/"
 
@@ -221,3 +218,22 @@ ACCOUNT_USERNAME_BLACKLIST = [
 ]
 
 ACCOUNT_ADAPTER = "a_users.adapter.MyAccountAdapter"
+
+
+DEBUG_TOOLBAR_ENABLED = "test" not in sys.argv
+
+if DEBUG_TOOLBAR_ENABLED:
+    INSTALLED_APPS += [
+        "debug_toolbar",
+    ]
+
+    MIDDLEWARE += [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    ]
+
+    INTERNAL_IPS = [
+        # ...
+        "127.0.0.1",
+        "localhost:800",
+        # ...
+    ]
