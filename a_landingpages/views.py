@@ -1,3 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def maintenance_page(request):
+    return render(request, "a_landingpages/maintenance.html")
