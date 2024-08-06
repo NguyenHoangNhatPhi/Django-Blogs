@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     "a_users",
     "a_inbox",
     "a_features",
+    "a_landingpages",
 ]
 
 MIDDLEWARE = [
