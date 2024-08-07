@@ -27,6 +27,7 @@ urlpatterns = [
     path("", include("a_posts.urls")),
     path("",include("a_users.urls")),
     path("__debug__/", include("debug_toolbar.urls")),
+    path("_/", include("a_landingpages.urls"))
 ]
 
 if settings.DEBUG:

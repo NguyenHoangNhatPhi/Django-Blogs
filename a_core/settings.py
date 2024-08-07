@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     "a_users",
     "a_inbox",
     "a_features",
+    "a_landingpages",
 ]
 
 MIDDLEWARE = [
@@ -85,6 +86,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
+    "a_landingpages.middleware.landingpage_middleware"
 ]
 
 
